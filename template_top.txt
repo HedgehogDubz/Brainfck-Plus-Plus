@@ -1,4 +1,14 @@
+#include <iostream>
+#include <vector>
+void mov_right();
+bool mov_left();
+void add();
+void sub();
+void save();
+void load();
+void print();
+int p = 0;
+int s = 0;
+std::vector<int> a = {0};
 int main(){
-    int p = 0;
-    int s = 0;
-    vector<int> a;
+    
