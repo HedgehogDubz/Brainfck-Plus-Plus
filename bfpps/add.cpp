@@ -6,6 +6,7 @@ void add();
 void sub();
 void save();
 void load();
+void output();
 void print();
 int p = 0;
 int s = 0;
@@ -14,7 +15,9 @@ int main(){
     
 a[p] = 3;
 mov_right();
-a[p] = 5007;
+a[p] = 5;
+if(mov_left()){return 1;}
+mov_right();
 while (a[p] != 0) {
 sub();
 if(mov_left()){return 1;}
@@ -51,6 +54,9 @@ void save(){
 }
 void load(){
     a[p] = s;
+}
+void output(){
+    std::cout << static_cast<char>(a[p]);
 }
 void print(){
     std::cout << a[p];

@@ -26,6 +26,9 @@ void save(){
 void load(){
     a[p] = s;
 }
+void output(){
+    std::cout << static_cast<char>(a[p]);
+}
 void print(){
     std::cout << a[p];
 }

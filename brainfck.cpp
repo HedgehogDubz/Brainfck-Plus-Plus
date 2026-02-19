@@ -3,11 +3,13 @@
 #include <string>
 #include <iterator>
 #include <cctype>
+#include <cstdlib>
+#include <unordered_map>
 
 int main() {
 
-
-    std::string name = "multiplication";
+    std::string fileName = "bfpps/add.bfpp";
+    std::string name = fileName.substr(0, fileName.find_last_of('.'));
 
 
 
@@ -32,7 +34,7 @@ int main() {
     std::string b((std::istreambuf_iterator<char>(bottomIn)),
                   std::istreambuf_iterator<char>());
 
-    const std::string inputFile = "bfpps/" + name + ".bfpp";
+    const std::string inputFile = fileName;
     std::ifstream inputIn(inputFile);
     if (!inputIn) {
         std::cerr << "Error opening file: " << inputFile << "\n";
@@ -44,6 +46,52 @@ int main() {
     std::string out;
 
     const char numbers[] = {'1','2','3','4','5','6','7','8','9','0'};
+    std::unordered_map<std::string, std::string> definitions;
+
+    // First pass: Extract all definitions from |def:rep| patterns
+    for (size_t i = 0; i < s.size(); i++) {
+        if (s[i] == '|') {
+            size_t end = s.find('|', i + 1);
+            if (end != std::string::npos) {
+                std::string content = s.substr(i + 1, end - i - 1);
+                size_t colonPos = content.find(':');
+                if (colonPos != std::string::npos) {
+                    std::string def = content.substr(0, colonPos);
+                    std::string rep = content.substr(colonPos + 1);
+                    definitions[def] = rep;
+                }
+                i = end; 
+            }
+        }
+    }
+
+    // Second pass: Replace all |def| with their definitions and remove |def:rep| patterns
+    std::string processed;
+    for (size_t i = 0; i < s.size(); i++) {
+        if (s[i] == '|') {
+            size_t end = s.find('|', i + 1);
+            if (end != std::string::npos) {
+                std::string content = s.substr(i + 1, end - i - 1);
+                size_t colonPos = content.find(':');
+                if (colonPos != std::string::npos) {
+                } else {
+                    if (definitions.find(content) != definitions.end()) {
+                        processed += definitions[content];
+                    } else {
+                        processed += s.substr(i, end - i + 1);
+                    }
+                }
+                i = end; 
+            } else {
+                processed += s[i];
+            }
+        } else {
+            processed += s[i];
+        }
+    }
+    s = processed; 
+
+
 
     for (size_t i = 0; i < s.size(); i++) {
         char c = s[i];
@@ -60,11 +108,14 @@ int main() {
             case '-':
                 out += "sub();\n";
                 break;
-            case 's':
+            case '^':
                 out += "save();\n";
                 break;
-            case 'l':
+            case 'v':
                 out += "load();\n";
+                break;
+            case 'o':
+                out += "output();\n";
                 break;
             case 'p':
                 out += "print();\n";
@@ -96,6 +147,10 @@ int main() {
                 }
                 break;
             }
+            case '\'':
+                out += "a[p] = " + std::to_string(static_cast<int>(s[i+1])) + ";\n";
+                i++;
+                break;
             default:
                 break;
         }
@@ -112,8 +167,14 @@ int main() {
     outputFile.close();
 
     std::string cmd = "g++ " + name + ".cpp -o " + name;
-    if (std::system(cmd.c_str()) != 0) return 1;
-    return std::system(("./" + name).c_str());
+    std::cout << "********* STARTING " + name + " *********"<< std::endl;
 
+    std::system(cmd.c_str());
+
+    std::system(("./" + name).c_str());
+
+    std::remove((name + ".cpp").c_str());
+    std::remove(name.c_str());
+    std::cout << "\n********* FINISHED " + name + " *********"<< std::endl;
     return 0;
 }

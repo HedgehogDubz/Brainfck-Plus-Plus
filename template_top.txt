@@ -6,6 +6,7 @@ void add();
 void sub();
 void save();
 void load();
+void output();
 void print();
 int p = 0;
 int s = 0;
