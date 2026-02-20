@@ -1,0 +1,11 @@
+@math.bfpp
+@print.bfpp
+>"Enter your first number: "{output_end}<[#<]
+~
+>#
+>"Enter your second number: "{output_end}<[#<]
+~
+<{add}>
+>"The sum is: "{output_end}<[<]
+<p
+

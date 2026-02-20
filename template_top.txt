@@ -8,6 +8,10 @@ void save();
 void load();
 void output();
 void print();
+void input_int();
+void input_str();
+void notz();
+
 int p = 0;
 int s = 0;
 std::vector<int> a = {0};

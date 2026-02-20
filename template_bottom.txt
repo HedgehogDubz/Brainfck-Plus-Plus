@@ -32,3 +32,34 @@ void output(){
 void print(){
     std::cout << a[p];
 }
+void input_int(){
+    int i = 0;
+    std::string s;
+    std::cin >> s;
+    try{
+        i = std::stoi(s);
+    } catch(...){
+        std::cerr << "\033[31m" << "ERROR invalid input" << "\033[0m" << std::endl;
+        return;
+    }    
+    a[p] = i;
+}
+void input_str(){
+    std::string st;
+    std::cin >> st;
+    int i = 0;
+    for(char c : st){
+        a[p] = c;
+        mov_right();
+        if(i >= s){
+            return;
+        }
+    }
+}
+void notz(){
+    if (a[p] == 0){
+        a[p] = 1;
+    } else {
+        a[p] = 0;
+    }
+}
