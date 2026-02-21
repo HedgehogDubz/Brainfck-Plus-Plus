@@ -87,8 +87,6 @@ int main(int argc, char* argv[]) {
     const char numbers[] = {'1','2','3','4','5','6','7','8','9','0'};
     std::unordered_map<std::string, std::string> definitions;
 
-    std::cout << s << std::endl;
-
 
 
 
